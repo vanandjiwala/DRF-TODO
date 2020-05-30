@@ -2,8 +2,10 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer,UserSerializer
+from .permissions import IsOwnerOrReadOnly
 from django.http import Http404
+from django.contrib.auth.models import User
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,6 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import generics
 
+from rest_framework import permissions
 
 # @csrf_exempt
 # def task_list(request):
@@ -156,8 +159,22 @@ def task_detail(request, id):
 class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
