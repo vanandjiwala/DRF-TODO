@@ -39,7 +39,11 @@ class TaskMasterViewSet(viewsets.ModelViewSet):
         So this method will set completed_at when user is compliting the task while creating it.
         Issue: completed_at value set prior to created_at as I am setting value and then creating the record in DB.
         """
-        if request.data.get('completed') is None:
+        print(request.data.get('completed'))
+        print(type(request.data.get('completed')))
+        print(type(False))
+        print(request.data.get('completed') == 'False')
+        if (request.data.get('completed') is None) or (request.data.get('completed').lower() == 'false'):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)

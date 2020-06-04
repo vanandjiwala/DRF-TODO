@@ -18,5 +18,12 @@ ___
 ___
 ## TODO:
 * ~~Resolve post task end point issue.~~ - Resolved 
+* Create test script
 * Summary end point to give user summary about how many tasks are done, how many tasks are pending and avg time to complete a task. 
+
+___
+## Test:
+* For this project, I am using pytest and requests module. requirements file has all the required dependancies.
+* Use command ```pytest tests\tasks_test.py``` from project root in order to run the tests
+* Use ```-s``` flag in tests in case print statements are required for debigging
 
