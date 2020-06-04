@@ -18,7 +18,7 @@ ___
 ___
 ## TODO:
 * ~~Resolve post task end point issue.~~ - Resolved 
-* Create test script
+* ~~Create test script~~
 * Summary end point to give user summary about how many tasks are done, how many tasks are pending and avg time to complete a task. 
 
 ___
