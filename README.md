@@ -17,6 +17,6 @@ ___
 * Create is not working because ```save()``` method in models file is creating some issue. I tried to differentiate ```insert``` and ```update``` by putting an if condition. If id is none then it is insert else it is an update. But that does not seem to work. I beleive there is a better way to do it and I am not handeling it the correct way. 
 ___
 ## TODO:
-* Resolve post task end point issue. 
+* ~~Resolve post task end point issue.~~ - Resolved 
 * Summary end point to give user summary about how many tasks are done, how many tasks are pending and avg time to complete a task. 
 

@@ -10,5 +10,10 @@ class TaskMasterSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'completed_at': {
                 'read_only': True
+            },
+            'id': {
+                'read_only': True
             }
         }
+
+

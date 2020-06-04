@@ -10,19 +10,21 @@ class TaskMaster(models.Model):
     completed_at = models.DateTimeField(null=True) #Should be updated when changing the completed state
 
 
-    """
-    Here, we are conditionally setting the completed time of the task only when completed is marked as True by
-    overriding the save method
-    Ref: https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
-    This breaks task post method. 
-    
-    """
-    def save(self, *args, **kwargs):
-        if self.completed == True:
-            self.completed_at = timezone.now()
-        else:
-            self.completed_at = None
-        super(TaskMaster, self).save(*args, *kwargs)
+    # """
+    # Here, we are conditionally setting the completed time of the task only when completed is marked as True by
+    # overriding the save method
+    # Ref: https://docs.djangoproject.com/en/3.0/topics/db/models/#overriding-model-methods
+    # This breaks task post method.
+    # This may not be the correct way to do it. Handled in the views.py file.
+    # Keeping this for learning and future reference.
+    #
+    # """
+    # def save(self, *args, **kwargs):
+    #     if self.completed == True:
+    #         self.completed_at = timezone.now()
+    #     else:
+    #         self.completed_at = None
+    #     super(TaskMaster, self).save(*args, *kwargs)
 
 
 
