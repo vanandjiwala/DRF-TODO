@@ -10,11 +10,11 @@ ___
 
 ___
 ## End Points
-```http://localhost:8000/api/tasks/``` - Task create and list end point
-```http://localhost:8000/api/tasks/id``` - retrieve, update and delete endpoint
-```http://localhost:8000/api/auth/signup/``` - Signup new user
-```http://localhost:8000/api/auth/login/``` - Log in new user and obtain auth_token
-```http://localhost:8000/api/auth/logout/``` - Log out user 
+* ```http://localhost:8000/api/tasks/``` - Task create and list end point
+* ```http://localhost:8000/api/tasks/id``` - retrieve, update and delete endpoint
+* ```http://localhost:8000/api/auth/signup/``` - Signup new user
+* ```http://localhost:8000/api/auth/login/``` - Log in new user and obtain auth_token
+* ```http://localhost:8000/api/auth/logout/``` - Log out user 
 ___
 ## Issues Identified:
 * ~~Create is not working because ```save()``` method in models file is creating some issue. I tried to differentiate ```insert``` and ```update``` by putting an if condition. If id is none then it is insert else it is an update. But that does not seem to work. I beleive there is a better way to do it and I am not handeling it the correct way.~~ - Resolved
