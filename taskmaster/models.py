@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.contrib.auth.models import User
 
 class TaskMaster(models.Model):
     """Task master table containing task related information"""
@@ -8,6 +9,7 @@ class TaskMaster(models.Model):
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True) #Should be updated when changing the completed state
+    owner = models.ForeignKey(User,on_delete=models.CASCADE)
 
 
     # """
@@ -17,7 +19,6 @@ class TaskMaster(models.Model):
     # This breaks task post method.
     # This may not be the correct way to do it. Handled in the views.py file.
     # Keeping this for learning and future reference.
-    #
     # """
     # def save(self, *args, **kwargs):
     #     if self.completed == True:

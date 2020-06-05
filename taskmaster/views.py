@@ -3,14 +3,20 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
 from django.utils import timezone
 
 from taskmaster import serializers
 from taskmaster.models import TaskMaster
 
+from rest_framework.authentication import TokenAuthentication
+
+
 class TaskMasterViewSet(viewsets.ModelViewSet):
     """Taskmaster viewset returns all tasks ordered by created date"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.TaskMasterSerializer
     queryset = TaskMaster.objects.all().order_by('created_at')
 
@@ -19,14 +25,14 @@ class TaskMasterViewSet(viewsets.ModelViewSet):
         """override list method to deal with query params"""
         task_status = request.query_params.get('status', None)
         if task_status is None:
-            queryset = TaskMaster.objects.all().order_by('created_at')
+            queryset = TaskMaster.objects.all().filter(owner=self.request.user.id).order_by('created_at')
             serializer = self.serializer_class(queryset, many=True)
             return Response(serializer.data)
         else:
             task_status = task_status.lower()
             if task_status in ['true', 'false']:
                 queryset = TaskMaster.objects.all().order_by('created_at')
-                queryset = queryset.filter(completed=(task_status == 'true')).order_by('created_at')
+                queryset = queryset.filter(owner=self.request.user.id).filter(completed=(task_status == 'true')).order_by('created_at')
                 serializer = self.serializer_class(queryset,many=True)
                 return Response(serializer.data)
 
@@ -39,20 +45,16 @@ class TaskMasterViewSet(viewsets.ModelViewSet):
         So this method will set completed_at when user is compliting the task while creating it.
         Issue: completed_at value set prior to created_at as I am setting value and then creating the record in DB.
         """
-        print(request.data.get('completed'))
-        print(type(request.data.get('completed')))
-        print(type(False))
-        print(request.data.get('completed') == 'False')
         if (request.data.get('completed') is None) or (request.data.get('completed').lower() == 'false'):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer)
+            self.perform_create(serializer.save(owner=self.request.user))
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         else:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer.save(completed_at=timezone.now()))
+            self.perform_create(serializer.save(completed_at=timezone.now(),owner=self.request.user))
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -68,7 +70,6 @@ class TaskMasterViewSet(viewsets.ModelViewSet):
         """
         instance = self.get_object()
         if request.data.get('completed') is not None:
-            print('if')
             task_completed = request.data.get("completed") == 'true'
             instance.completed = task_completed
             instance.completed_at = timezone.now()
@@ -77,7 +78,6 @@ class TaskMasterViewSet(viewsets.ModelViewSet):
             self.perform_update(serializer)
             return Response(serializer.data)
         else:
-            print('else')
             instance.completed_at = None
             serializer = self.get_serializer(instance, data=request.data)
             serializer.is_valid(raise_exception=True)

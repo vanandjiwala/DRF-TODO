@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from taskmaster import models
 
+
 class TaskMasterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.TaskMaster
-        fields = ['id','title','description','completed','created_at','completed_at']
+
+        fields = ['id','title','description','completed','created_at','completed_at','owner']
         """completed_at is marked read only so it can be altered at updated time by system."""
         extra_kwargs = {
             'completed_at': {
@@ -13,7 +15,10 @@ class TaskMasterSerializer(serializers.ModelSerializer):
             },
             'id': {
                 'read_only': True
-            }
+            },
+            'owner': {
+                'read_only': True
+            },
         }
 
 
