@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from projects.models import Project
 
 class TaskMaster(models.Model):
     """Task master table containing task related information"""
@@ -9,7 +10,8 @@ class TaskMaster(models.Model):
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True) #Should be updated when changing the completed state
-    owner = models.ForeignKey(User,on_delete=models.CASCADE)
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name='owner')
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,default=2,related_name='project')
 
 
     # """

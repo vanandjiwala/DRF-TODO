@@ -11,7 +11,9 @@ ___
 ___
 ## End Points
 * ```http://localhost:8000/api/tasks/``` - Task create and list end point
-* ```http://localhost:8000/api/tasks/id``` - retrieve, update and delete endpoint
+* ```http://localhost:8000/api/tasks/id``` - Task retrieve, update and delete endpoint
+* ```http://localhost:8000/api/projects``` - Project create and list end point
+* ```http://localhost:8000/api/projects/id``` - Project retrieve, update and delete endpoint
 * ```http://localhost:8000/api/auth/signup/``` - Signup new user
 * ```http://localhost:8000/api/auth/login/``` - Log in new user and obtain auth_token
 * ```http://localhost:8000/api/auth/logout/``` - Log out user 
